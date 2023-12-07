@@ -1,0 +1,83 @@
+body {
+    margin: 0px;
+    background: rgb(2,0,36);
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(43,109,101,1) 35%, rgba(0,212,255,1) 100%);
+    color: #293264;
+    font-family: Karla;
+}
+
+.title--page{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+}
+
+.app--title{
+    color: black;
+    text-shadow:
+    0 0 7px rgba(0,212,255,1),
+    0 0 10px rgba(0,212,255,1),
+    0 0 21px rgba(0,212,255,1),
+    0 0 42px rgba(0,212,255,1),
+    0 0 82px rgba(0,212,255,1),
+    0 0 92px rgba(0,212,255,1),
+    0 0 102px rgba(0,212,255,1),
+    0 0 151px rgba(0,212,255,1);
+    font-size: 50px;
+}
+
+.start--button {
+    background: linear-gradient(90deg,
+        rgba(0,212,255,1) 100%,
+        rgba(43,109,101,1) 35%,
+        rgba(2,0,36,1) 0%
+    );
+    margin-top: 120px;
+    width: 200px;
+    height: 60px;
+    border-radius: 15px;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.question--component {
+    padding: 30px 120px ;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    justify-items: center;
+    
+}
+
+.question--text {
+    font-size: 1.5rem;
+    color: white;
+
+}
+
+.question--answerContainer {
+    display: flex;
+    justify-content: flex-start;
+    gap: 15px;
+}
+
+.question--answerText {
+    border-radius: 8px;
+    font-size: 1.5rem;
+    background-color: transparent;
+    color: white;
+
+}
+
+.restart--button {
+    display: flex;
+    margin: auto;
+    margin-bottom: 30px;
+    border-radius: 8px;
+    font-size: 2rem;
+    background-color: transparent;
+    color: white;
+}
