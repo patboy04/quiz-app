@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { useLoaderData } from "react-router-dom";
+import { CircularProgressbar } from 'react-circular-progressbar';
 import { shuffle, htmlToText } from "../utils";
+import 'react-circular-progressbar/dist/styles.css';
 
 export async function loader({ request }) {
     const res = await fetch(`https://opentdb.com/api.php?amount=10&type=multiple`)
     if(!res.ok) {
         throw {
-            message: "failed to load questions"
+            message: "Failed to load Questions"
         }
     }
     const data = await res.json()
@@ -49,26 +51,35 @@ export default function Game() {
     }
 
     return (
-        <div>
+        <div className="game--container">
             {
                 gameState ? (
-                    <>
-                        <h4>{finalQuestions[questionNumber].questionText}</h4>
-                        <div>
-                            {
-                                finalQuestions[questionNumber].answers.map(answer => {
-                                    return <button onClick={() => handleClick(answer.isCorrect)}>{answer.answerText}</button>
-                                })
-                            }
+                    <>  
+                        <div className="progress--bar">
+                            <CircularProgressbar value={questionNumber*10} text={`${questionNumber*10}%`} />
                         </div>
-                        <h1>{score}</h1>
+                        <div className="question--container">
+                            <h4 className="question--text">{finalQuestions[questionNumber].questionText}</h4>
+                            <div className="answer--container">
+                                {
+                                    finalQuestions[questionNumber].answers.map(answer => {
+                                        return <button 
+                                            onClick={() => handleClick(answer.isCorrect)} 
+                                            className="answer--button"
+                                        >
+                                            {answer.answerText}
+                                        </button>
+                                    })
+                                }
+                            </div>
+                        </div>
+                        
                     </>
                 ) : <h1>GAME FINISH</h1>
-                    
-                    
 
             }
             
         </div>
+        
     )
 }
