@@ -14,6 +14,7 @@ export async function loader({ request }) {
 }
 
 export default function Game() {
+    const [gameState, setGameState] = useState(true)
     const [questionNumber, setQuestionNumber] = useState(0)
     const [score, setScore] = useState(0)
     const questions = useLoaderData()
@@ -39,7 +40,7 @@ export default function Game() {
         if (questionNumber < finalQuestions.length-1) {
             setQuestionNumber(prevQNumber => prevQNumber + 1)
         } else {
-            console.log("finish")
+            setGameState(false)
         }
          
         if(isCorrect) {
@@ -49,15 +50,25 @@ export default function Game() {
 
     return (
         <div>
-            <h4>{finalQuestions[questionNumber].questionText}</h4>
-            <div>
-                {
-                    finalQuestions[questionNumber].answers.map(answer => {
-                        return <button onClick={() => handleClick(answer.isCorrect)}>{answer.answerText}</button>
-                    })
-                }
-            </div>
-            <h1>{score}</h1>
+            {
+                gameState ? (
+                    <>
+                        <h4>{finalQuestions[questionNumber].questionText}</h4>
+                        <div>
+                            {
+                                finalQuestions[questionNumber].answers.map(answer => {
+                                    return <button onClick={() => handleClick(answer.isCorrect)}>{answer.answerText}</button>
+                                })
+                            }
+                        </div>
+                        <h1>{score}</h1>
+                    </>
+                ) : <h1>GAME FINISH</h1>
+                    
+                    
+
+            }
+            
         </div>
     )
 }
