@@ -5,9 +5,9 @@ export default function Error() {
     const error = useRouteError()
 
     return (
-        <div>
-            <h1>{error.message}</h1>
-            <h1>Please Reload the Page</h1>
+        <div className="container">
+            <h1 className="big--text">{error.message}</h1>
+            <h1 className="big--text">Please Reload the Page</h1>
         </div> 
         
     )

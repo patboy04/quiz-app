@@ -1,11 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { useLoaderData } from "react-router-dom";
+import React, { useState } from "react";
+import { useLoaderData, Link } from "react-router-dom";
 import { CircularProgressbar } from 'react-circular-progressbar';
+import ReactLoading from 'react-loading';
 import { shuffle, htmlToText, sleep } from "../utils";
 import 'react-circular-progressbar/dist/styles.css';
 
 export async function loader({ request }) {
-    const res = await fetch(`https://opentdb.com/api.php?amount=10&type=multiple`)
+    const difficulty = new URL(request.url).searchParams.get("difficulty") 
+   
+    const res = difficulty 
+        ? await fetch(`https://opentdb.com/api.php?amount=10&difficulty=${difficulty}&type=multiple`)
+        : await fetch(`https://opentdb.com/api.php?amount=10&type=multiple`)
     if(!res.ok) {
         throw {
             message: "Failed to load Questions"
@@ -37,14 +42,17 @@ export async function loader({ request }) {
 export default function Game() {
     const [gameState, setGameState] = useState(true)
     const [questionState, setQuestionState] = useState(false)
+    const [loadingProgress, setLoadingProgress] = useState(0)
     const [questionNumber, setQuestionNumber] = useState(0)
     const [score, setScore] = useState(0)
     const questions = useLoaderData()
     
+    
+
     async function handleClick(isCorrect) {
         if (questionNumber < questions.length-1) {
             setQuestionState(true)
-            await sleep(5000)
+            await sleep(1500)
             setQuestionNumber(prevQNumber => prevQNumber + 1)
             setQuestionState(false)
         } else {
@@ -56,16 +64,11 @@ export default function Game() {
         }
     }
 
-    function nextQuestion() {
-
-    }
-
     return (
         <div className="game--container">
             {
                 gameState ? (
-                    <>  
-                        <div className="progress--bar">
+                    <>  <div className="question--progress">
                             <CircularProgressbar value={questionNumber*10} text={`${questionNumber*10}%`} />
                         </div>
                         <div className="question--container">
@@ -85,16 +88,25 @@ export default function Game() {
                                                     ? "red"
                                                     : ""
                                             }}
+                                            disabled={questionState}
                                         >
                                             {answer.answerText}
                                         </button>
                                     })
                                 }
                             </div>
+                            <div className="progress--bar">
+                                {questionState && <ReactLoading color={"#5B1CAE"}  width={"5vw"} />}
+                            </div>
                         </div>
                         
                     </>
-                ) : <h1>GAME FINISH</h1>
+                ) : (
+                        <>
+                            <h4 className="big--text">{`You Scored ${score}/10`}</h4>
+                            <Link to=".."><button className="button">Play Again</button></Link>
+                        </>
+                )
 
             }
         </div>

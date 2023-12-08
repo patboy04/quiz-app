@@ -3,7 +3,6 @@ import { RouterProvider, createBrowserRouter, createRoutesFromElements, Route } 
 import Layout from "./components/Layout.jsx"
 import Home from "./pages/Home.jsx";
 import Error from "./pages/Error.jsx"
-import About from "./pages/About.jsx"
 import Game, { loader as gameLoader} from "./pages/Game.jsx"
 
 import { nanoid } from "nanoid";
@@ -13,9 +12,9 @@ export default function App() {
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<Layout/>}>
-        <Route index element={<Home/>}/>
+        <Route index element={<Home/>} errorElement={<Error/>}/>
         <Route path="game" element={<Game/>} loader={gameLoader} errorElement={<Error/>}/>
-        <Route path="about" element={<About/>}/>
+        <Route path="*" element={<Home/>}/>
     </Route>
 ))
     return (
