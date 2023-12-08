@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLoaderData } from "react-router-dom";
 import { CircularProgressbar } from 'react-circular-progressbar';
-import { shuffle, htmlToText } from "../utils";
+import { shuffle, htmlToText, sleep } from "../utils";
 import 'react-circular-progressbar/dist/styles.css';
 
 export async function loader({ request }) {
@@ -41,10 +41,12 @@ export default function Game() {
     const [score, setScore] = useState(0)
     const questions = useLoaderData()
     
-    function handleClick(isCorrect) {
+    async function handleClick(isCorrect) {
         if (questionNumber < questions.length-1) {
             setQuestionState(true)
-            //setQuestionNumber(prevQNumber => prevQNumber + 1)
+            await sleep(5000)
+            setQuestionNumber(prevQNumber => prevQNumber + 1)
+            setQuestionState(false)
         } else {
             setGameState(false)
         }
@@ -52,6 +54,10 @@ export default function Game() {
         if(isCorrect) {
             setScore(prevScore => prevScore + 1)
         }
+    }
+
+    function nextQuestion() {
+
     }
 
     return (

@@ -6,6 +6,11 @@ export function shuffle(array) {
     return array; 
 }; 
 
+export function sleep(seconds){
+    return new Promise(resolve => setTimeout(resolve, seconds)
+  )
+}
+
 export function htmlToText(string) {
     const list = [
         ['\"', /&quot;/g],
