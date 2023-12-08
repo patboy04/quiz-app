@@ -3,6 +3,7 @@ body {
   padding: 0px;
   font-size: "poppins";
   background: #b685ee;
+  background-image: url("./assets/circle.png"), url("./assets/med-circle.png"), url("./assets/small-circle.png");
 }
 
 div {
@@ -24,6 +25,7 @@ a {
   align-items: center;
   gap: 5vh;
   background: radial-gradient(circle, rgba(179,128,237,1) 0%, rgba(207,175,244,1) 45%, rgba(216,190,246,1) 92%);
+  
 }
 
 .header {
@@ -118,6 +120,11 @@ a {
   flex-direction: column;
   align-items: center;
   width: 30vw;
+
+}
+
+*, ::after, ::before {
+  box-sizing: unset;
 }
 
 .big--text {

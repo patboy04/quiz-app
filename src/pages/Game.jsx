@@ -95,11 +95,10 @@ export default function Game() {
                                     })
                                 }
                             </div>
-                            <div className="progress--bar">
-                                {questionState && <ReactLoading color={"#5B1CAE"}  width={"5vw"} />}
-                            </div>
                         </div>
-                        
+                        <div className="progress--bar">
+                            {questionState && <ReactLoading color={"#5B1CAE"}  width={"5vw"} />}
+                        </div>
                     </>
                 ) : (
                         <>
