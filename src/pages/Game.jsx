@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLoaderData } from "react-router-dom";
 import { CircularProgressbar } from 'react-circular-progressbar';
 import { shuffle, htmlToText } from "../utils";
@@ -12,17 +12,9 @@ export async function loader({ request }) {
         }
     }
     const data = await res.json()
-    return data.results
-}
 
-export default function Game() {
-    const [gameState, setGameState] = useState(true)
-    const [questionNumber, setQuestionNumber] = useState(0)
-    const [score, setScore] = useState(0)
-    const questions = useLoaderData()
-    
     //refactor data from api call
-    const refactoredQuestions = questions.map(question => ({
+    const refactoredQuestions = data.results.map(question => ({
         questionText: htmlToText(question.question),
         answers: [
             {answerText: htmlToText(question.incorrect_answers[0]), isCorrect: false},
@@ -32,15 +24,27 @@ export default function Game() {
         ]
     }))
 
-    //shuffle answers
+    //shuffle answer
     const finalQuestions = refactoredQuestions.map(question => ({
         ...question,
         answers: shuffle(question.answers)
     }))
 
+    //return the data
+    return finalQuestions
+}
+
+export default function Game() {
+    const [gameState, setGameState] = useState(true)
+    const [questionState, setQuestionState] = useState(false)
+    const [questionNumber, setQuestionNumber] = useState(0)
+    const [score, setScore] = useState(0)
+    const questions = useLoaderData()
+    
     function handleClick(isCorrect) {
-        if (questionNumber < finalQuestions.length-1) {
-            setQuestionNumber(prevQNumber => prevQNumber + 1)
+        if (questionNumber < questions.length-1) {
+            setQuestionState(true)
+            //setQuestionNumber(prevQNumber => prevQNumber + 1)
         } else {
             setGameState(false)
         }
@@ -59,13 +63,22 @@ export default function Game() {
                             <CircularProgressbar value={questionNumber*10} text={`${questionNumber*10}%`} />
                         </div>
                         <div className="question--container">
-                            <h4 className="question--text">{finalQuestions[questionNumber].questionText}</h4>
+                            <h4 className="question--text">{questions[questionNumber].questionText}</h4>
                             <div className="answer--container">
                                 {
-                                    finalQuestions[questionNumber].answers.map(answer => {
+                                    questions[questionNumber].answers.map(answer => {
                                         return <button 
                                             onClick={() => handleClick(answer.isCorrect)} 
                                             className="answer--button"
+                                            style={{
+                                                border: "solid",
+                                                borderRadius: "18px",
+                                                borderColor: answer.isCorrect && questionState 
+                                                    ? "#14FF00" 
+                                                    : !answer.isCorrect && questionState 
+                                                    ? "red"
+                                                    : ""
+                                            }}
                                         >
                                             {answer.answerText}
                                         </button>
@@ -78,7 +91,6 @@ export default function Game() {
                 ) : <h1>GAME FINISH</h1>
 
             }
-            
         </div>
         
     )
